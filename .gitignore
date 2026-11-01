@@ -1,0 +1,26 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ===== 虚拟环境 =====
+venv/
+.venv/
+env/
+
+# ===== 配置与密钥（重要：不要提交 API Key）=====
+.env
+
+# ===== 运行时生成的数据与产物 =====
+data/raw/
+data/warehouse/
+outputs/
+
+# ===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+.DS_Store
+*.log

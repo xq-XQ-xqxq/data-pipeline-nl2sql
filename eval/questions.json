@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "category": "日活",
+    "question": "2026-10-16 的日活用户数 DAU 是多少？",
+    "reference_sql": "SELECT COUNT(DISTINCT f.user_id) AS dau FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16'"
+  },
+  {
+    "id": 2,
+    "category": "日活",
+    "question": "2026-10-15 这天有多少活跃用户？",
+    "reference_sql": "SELECT COUNT(DISTINCT f.user_id) AS dau FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-15'"
+  },
+  {
+    "id": 3,
+    "category": "流量",
+    "question": "2026-10-16 的浏览量 PV 是多少？",
+    "reference_sql": "SELECT COUNT(*) AS pv FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'view'"
+  },
+  {
+    "id": 4,
+    "category": "新增",
+    "question": "2026-10-16 新增注册用户有多少人？",
+    "reference_sql": "SELECT COUNT(*) AS new_users FROM dim_user WHERE register_date = '2026-10-16'"
+  },
+  {
+    "id": 5,
+    "category": "交易",
+    "question": "2026-10-16 下单的用户有多少人？",
+    "reference_sql": "SELECT COUNT(DISTINCT f.user_id) AS order_users FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'order'"
+  },
+  {
+    "id": 6,
+    "category": "交易",
+    "question": "2026-10-16 一共产生了多少笔订单？",
+    "reference_sql": "SELECT COUNT(*) AS order_count FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'order'"
+  },
+  {
+    "id": 7,
+    "category": "交易",
+    "question": "2026-10-16 支付成功的用户有多少人？",
+    "reference_sql": "SELECT COUNT(DISTINCT f.user_id) AS pay_users FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'pay'"
+  },
+  {
+    "id": 8,
+    "category": "交易",
+    "question": "2026-10-16 的 GMV（支付总金额）是多少？",
+    "reference_sql": "SELECT SUM(f.amount) AS gmv FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'pay'"
+  },
+  {
+    "id": 9,
+    "category": "交易",
+    "question": "2026-10-16 的客单价是多少？",
+    "reference_sql": "SELECT SUM(f.amount) / COUNT(DISTINCT f.user_id) AS aov FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'pay'"
+  },
+  {
+    "id": 10,
+    "category": "转化",
+    "question": "2026-10-16 加购的用户有多少人？",
+    "reference_sql": "SELECT COUNT(DISTINCT f.user_id) AS cart_users FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'cart'"
+  },
+  {
+    "id": 11,
+    "category": "转化",
+    "question": "2026-10-16 浏览商品的用户有多少人？",
+    "reference_sql": "SELECT COUNT(DISTINCT f.user_id) AS view_users FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'view'"
+  },
+  {
+    "id": 12,
+    "category": "转化",
+    "question": "2026-10-16 浏览到支付的整体转化率是多少？",
+    "reference_sql": "SELECT COUNT(DISTINCT CASE WHEN f.event_type = 'pay' THEN f.user_id END) * 1.0 / COUNT(DISTINCT CASE WHEN f.event_type = 'view' THEN f.user_id END) AS view_to_pay_rate FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16'"
+  },
+  {
+    "id": 13,
+    "category": "转化",
+    "question": "2026-10-16 浏览、加购、下单、支付每个环节分别有多少去重用户？",
+    "reference_sql": "SELECT f.event_type, COUNT(DISTINCT f.user_id) AS users FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type IN ('view','cart','order','pay') GROUP BY f.event_type"
+  },
+  {
+    "id": 14,
+    "category": "渠道",
+    "question": "2026-10-16 各渠道的支付 GMV 分别是多少？",
+    "reference_sql": "SELECT c.channel_name, SUM(f.amount) AS gmv FROM fact_user_event f JOIN dim_channel c ON c.channel_id = f.channel_id JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'pay' GROUP BY c.channel_name"
+  },
+  {
+    "id": 15,
+    "category": "渠道",
+    "question": "2026-10-16 各渠道分别有多少活跃用户？",
+    "reference_sql": "SELECT c.channel_name, COUNT(DISTINCT f.user_id) AS active_users FROM fact_user_event f JOIN dim_channel c ON c.channel_id = f.channel_id JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' GROUP BY c.channel_name"
+  },
+  {
+    "id": 16,
+    "category": "日活",
+    "question": "2026 年 10 月每天的日活分别是多少？",
+    "reference_sql": "SELECT d.full_date, COUNT(DISTINCT f.user_id) AS dau FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date BETWEEN '2026-10-01' AND '2026-10-16' GROUP BY d.full_date"
+  },
+  {
+    "id": 17,
+    "category": "交易",
+    "question": "2026 年 10 月 1 日到 16 日的总 GMV 是多少？",
+    "reference_sql": "SELECT SUM(f.amount) AS gmv FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date BETWEEN '2026-10-01' AND '2026-10-16' AND f.event_type = 'pay'"
+  },
+  {
+    "id": 18,
+    "category": "交易",
+    "question": "2026 年 10 月 1 日到 16 日一共有多少笔订单？",
+    "reference_sql": "SELECT COUNT(*) AS order_count FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date BETWEEN '2026-10-01' AND '2026-10-16' AND f.event_type = 'order'"
+  },
+  {
+    "id": 19,
+    "category": "商品",
+    "question": "2026 年 10 月 1 日到 16 日各品类的 GMV 分别是多少？",
+    "reference_sql": "SELECT p.category, SUM(f.amount) AS gmv FROM fact_user_event f JOIN dim_product p ON p.product_id = f.product_id JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date BETWEEN '2026-10-01' AND '2026-10-16' AND f.event_type = 'pay' GROUP BY p.category"
+  },
+  {
+    "id": 20,
+    "category": "商品",
+    "question": "10 月上半月 GMV 最高的三个品类是什么？",
+    "reference_sql": "SELECT p.category, SUM(f.amount) AS gmv FROM fact_user_event f JOIN dim_product p ON p.product_id = f.product_id JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date BETWEEN '2026-10-01' AND '2026-10-16' AND f.event_type = 'pay' GROUP BY p.category ORDER BY gmv DESC LIMIT 3"
+  },
+  {
+    "id": 21,
+    "category": "商品",
+    "question": "手机数码品类一共有多少个商品？",
+    "reference_sql": "SELECT COUNT(*) AS cnt FROM dim_product WHERE category = '手机数码'"
+  },
+  {
+    "id": 22,
+    "category": "商品",
+    "question": "单价超过 3000 元的商品有多少个？",
+    "reference_sql": "SELECT COUNT(*) AS cnt FROM dim_product WHERE price > 3000"
+  },
+  {
+    "id": 23,
+    "category": "商品",
+    "question": "2026-10-16 各品类分别被浏览了多少次？",
+    "reference_sql": "SELECT p.category, COUNT(*) AS view_count FROM fact_user_event f JOIN dim_product p ON p.product_id = f.product_id JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'view' GROUP BY p.category"
+  },
+  {
+    "id": 24,
+    "category": "商品",
+    "question": "名称里包含“手机”两个字的商品，总共被浏览了多少次？",
+    "reference_sql": "SELECT COUNT(*) AS view_count FROM fact_user_event f JOIN dim_product p ON p.product_id = f.product_id JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date BETWEEN '2026-07-19' AND '2026-10-16' AND f.event_type = 'view' AND p.product_name LIKE '%手机%'"
+  },
+  {
+    "id": 25,
+    "category": "用户",
+    "question": "各城市分别有多少用户？",
+    "reference_sql": "SELECT city, COUNT(*) AS user_count FROM dim_user GROUP BY city"
+  },
+  {
+    "id": 26,
+    "category": "用户",
+    "question": "男性用户一共有多少人？",
+    "reference_sql": "SELECT COUNT(*) AS male_users FROM dim_user WHERE gender = '男'"
+  },
+  {
+    "id": 27,
+    "category": "用户",
+    "question": "25 岁以下的用户有多少人？",
+    "reference_sql": "SELECT COUNT(*) AS cnt FROM dim_user WHERE age < 25"
+  },
+  {
+    "id": 28,
+    "category": "用户",
+    "question": "女性用户的平均年龄是多少？",
+    "reference_sql": "SELECT AVG(age) AS avg_age FROM dim_user WHERE gender = '女'"
+  },
+  {
+    "id": 29,
+    "category": "用户",
+    "question": "2026 年 10 月 1 日到 16 日支付次数大于等于两次的复购用户有多少人？",
+    "reference_sql": "SELECT COUNT(*) AS repeat_pay_users FROM (SELECT f.user_id FROM fact_user_event f JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date BETWEEN '2026-10-01' AND '2026-10-16' AND f.event_type = 'pay' GROUP BY f.user_id HAVING COUNT(*) >= 2) t"
+  },
+  {
+    "id": 30,
+    "category": "用户",
+    "question": "2026-10-16 北京用户的支付总金额是多少？",
+    "reference_sql": "SELECT SUM(f.amount) AS gmv FROM fact_user_event f JOIN dim_user u ON u.user_id = f.user_id JOIN dim_date d ON d.date_id = f.date_id WHERE d.full_date = '2026-10-16' AND f.event_type = 'pay' AND u.city = '北京'"
+  }
+]

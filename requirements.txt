@@ -1,0 +1,11 @@
+# ===== 数据分析智能体与轻量数据管道：依赖清单 =====
+# 安装命令：pip install -r requirements.txt
+# 说明：只约束最低版本，避免在较新的 Python（如 3.13）上编译旧版源码包
+
+pandas>=2.2            # 数据清洗与指标计算
+SQLAlchemy>=2.0        # 统一数据库连接（SQLite / MySQL 都靠它）
+PyMySQL>=1.1           # MySQL 驱动（用 SQLite 练习时不强制，但建议装上）
+python-dotenv>=1.0     # 读取 .env 配置（数据库地址、大模型密钥）
+openai>=1.54           # 大模型 SDK（DeepSeek / 通义等兼容 OpenAI 协议的接口都能用）
+APScheduler>=3.10      # ETL 定时调度
+pytest>=8.0            # 数据质量自动化测试
